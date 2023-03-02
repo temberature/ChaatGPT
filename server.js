@@ -6,19 +6,19 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-// Define the OpenAI API endpoint and headers
-const openaiApiEndpoint = 'https://api.openai.com/v1/chat/completions';
-const openaiApiHeaders = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-};
 // Set up the body parser middleware
 app.use(bodyParser.json());
 // Set up the cors middleware and add the Access-Control-Allow-Origin header
 app.use(cors());
 // Set up the route to handle chat completions
 app.post('/v1/chat/completions', async (req, res) => {
-    // console.log(req);
+    // console.log(req.headers);
+    // Define the OpenAI API endpoint and headers
+    const openaiApiEndpoint = 'https://api.openai.com/v1/chat/completions';
+    const openaiApiHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': req.headers["authorization"] || `Bearer ${process.env.OPENAI_API_KEY}`,
+    };
     if (!req.body) {
         return;
     }
